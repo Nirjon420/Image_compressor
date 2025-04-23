@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ইমেজ কম্প্রেসার টুল - ছবি ছোট করুন দ্রুত এবং সহজে। SEO-ফ্রেন্ডলি ওয়েবসাইট">
+  <meta name="keywords" content="image compress, ইমেজ কম্প্রেশন, free image tool, seo">
+  <meta name="author" content="Your Name">
+
+  <title>ইমেজ কম্প্রেসার টুল</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background: #f9f9f9;
+    }
+    input[type=range] {
+      width: 300px;
+    }
+    .output {
+      margin-top: 10px;
+    }
+    .ad-container {
+      margin: 30px 0;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>ইমেজ কম্প্রেসার টুল</h1>
+  <p>আপনার ইমেজ আপলোড করুন এবং কম্প্রেশন লেভেল বেছে নিন</p>
+
+  <input type="file" id="imageInput" accept="image/*"><br><br>
+
+  <label for="qualityRange">কম্প্রেশন লেভেল:</label><br>
+  <input type="range" id="qualityRange" min="10" max="100" value="80">
+  <div class="output">কম্প্রেশন গুণমান: <span id="qualityValue">80</span>%</div><br>
+
+  <button onclick="compressImage()">কম্প্রেস করুন</button>
+  <br><br>
+  <canvas id="canvas" style="max-width: 100%; border: 1px solid #ccc;"></canvas>
+  <br><a id="downloadLink" style="display:none;" download="compressed.jpg">কম্প্রেসড ইমেজ ডাউনলোড করুন</a>
+
+  <div class="ad-container">
+    <!-- AdSense Ad Unit -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Replace with your AdSense ad unit code below -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+         data-ad-slot="1234567890"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <script>
+    const qualityRange = document.getElementById('qualityRange');
+    const qualityValue = document.getElementById('qualityValue');
+
+    qualityRange.addEventListener('input', () => {
+      qualityValue.textContent = qualityRange.value;
+    });
+
+    function compressImage() {
+      const file = document.getElementById('imageInput').files[0];
+      const quality = qualityRange.value / 100;
+      if (!file) return alert('ইমেজ নির্বাচন করুন');
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+          const compressedData = canvas.toDataURL('image/jpeg', quality);
+          const link = document.getElementById('downloadLink');
+          link.href = compressedData;
+          link.style.display = 'inline';
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
